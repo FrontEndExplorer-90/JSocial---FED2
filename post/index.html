@@ -2,12 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Noroff FED2 JS2 CA</title>
-    <script type="module" src="/src/app.js"></script>
+    <title>JSocial – Feed</title>
   </head>
   <body>
-    <h1>Post Page</h1>
+    <h1>Feed</h1>
+
+    <!-- mini nav -->
+    <nav style="margin-bottom: 1rem;">
+      <a href="/profile/index.html">My profile</a>
+      <a href="/post/create/index.html">+ New Post</a>
+      <button id="logout">Logout</button>
+    </nav>
+
+    <!-- search (optional) -->
+    <input id="search" type="search" placeholder="Search posts..." />
+
+    <!-- the feed -->
+    <ul id="feed"></ul>
+
+    <script type="module" src="/src/js/ui/post/feed.js"></script>
   </body>
 </html>

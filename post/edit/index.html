@@ -2,17 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Noroff FED2 JS2 CA</title>
-    <script type="module" src="/src/app.js"></script>
+    <title>Edit Post</title>
   </head>
 
   <body>
     <h1>Edit Post</h1>
 
-    <form name="editPost">
-      <button>Edit Post</button>
+    <form id="edit-post">
+      <div>
+        <label for="title">Title</label>
+        <input id="title" name="title" required />
+      </div>
+
+      <div>
+        <label for="body">Body</label>
+        <textarea id="body" name="body" rows="5"></textarea>
+      </div>
+
+      <button type="submit">Save</button>
+      <a href="/post/index.html">Cancel</a>
     </form>
+
+    <!-- point to your new script, not app.js -->
+    <script type="module" src="/src/js/ui/post/update.js"></script>
   </body>
 </html>
+

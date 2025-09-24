@@ -1,17 +1,27 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Noroff FED2 JS2 CA</title>
-    <script type="module" src="/src/app.js"></script>
+    <meta charset="utf-8" />
+    <title>My Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <h1>Profile</h1>
+    <nav style="margin-bottom:1rem;">
+      <a href="/post/index.html">← Feed</a>
+    </nav>
 
-    <form name="updateProfile">
-      <button>Update Profile</button>
-    </form>
+    <h1 id="title">My Profile</h1>
+    <div id="info"></div>
+
+    <h2>My posts</h2>
+    <ul id="posts"></ul>
+
+    <div id="actions" style="margin-top:1rem;">
+      <!-- follow/unfollow only shows when viewing someone else -->
+      <button id="followBtn" hidden>Follow</button>
+      <button id="unfollowBtn" hidden>Unfollow</button>
+    </div>
+
+    <script type="module" src="/src/js/ui/profile/profile.js"></script>
   </body>
 </html>
