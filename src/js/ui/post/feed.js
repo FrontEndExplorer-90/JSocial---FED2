@@ -1,4 +1,3 @@
-// src/js/ui/post/feed.js
 import { fetchJson } from "/src/js/api/client.js";
 
 // --- Auth guard ---
@@ -7,12 +6,12 @@ const apiKey = localStorage.getItem("jsocial_apiKey");
 if (!token || !apiKey) location.href = "/auth/login/index.html";
 
 // who am I?
-const myName = localStorage.getItem("jsocial_name") || "";
+const myName = (localStorage.getItem("jsocial_name") || "").toLowerCase();
 
 // DOM
 const list = document.querySelector("#feed");
 const logoutBtn = document.querySelector("#logout");
-const searchInput = document.querySelector("#search"); // optional
+const searchInput = document.querySelector("#search"); 
 
 // Logout
 logoutBtn?.addEventListener("click", () => {
@@ -22,7 +21,11 @@ logoutBtn?.addEventListener("click", () => {
   location.href = "/auth/login/index.html";
 });
 
-// Helpers
+/**
+ * Escape HTML special characters to prevent XSS.
+ * @param {string} [s=""] - The string to escape.
+ * @returns {string} Escaped HTML-safe string.
+ */
 function escapeHtml(s = "") {
   return s.replace(/[&<>"']/g, (m) => ({
     "&": "&amp;",
@@ -32,6 +35,12 @@ function escapeHtml(s = "") {
     "'": "&#39;",
   }[m]));
 }
+
+/**
+ * Format an ISO date string into a human-readable date/time.
+ * @param {string} iso - ISO date string.
+ * @returns {string} Localized date/time string, or empty string on error.
+ */
 function formatDate(iso) {
   try { return new Date(iso).toLocaleString(); } catch { return ""; }
 }
@@ -39,7 +48,11 @@ function formatDate(iso) {
 // State
 let allPosts = [];
 
-// Render
+/**
+ * Render posts into the feed list.
+ * Adds edit/delete buttons for the logged-in user’s posts.
+ * @param {Array<Object>} items - Array of post objects.
+ */
 function render(items) {
   if (!items.length) {
     list.innerHTML = "<li>No posts yet.</li>";
@@ -51,11 +64,13 @@ function render(items) {
     const body   = escapeHtml(p.body || "");
     const author = p.author?.name || "unknown";
     const when   = formatDate(p.created || p.updated);
-    const mine   = author === myName;
+    const mine   = (author || "").toLowerCase() === myName;
 
     return `
       <li style="margin:1rem 0; line-height:1.4" data-id="${p.id}">
-        <strong>${title}</strong><br/>
+        <strong>
+          <a href="/post/details/index.html?id=${p.id}">${title}</a>
+        </strong>
         <small>
           by <a href="/profile/index.html?name=${encodeURIComponent(author)}">${escapeHtml(author)}</a> • ${when}
         </small>
