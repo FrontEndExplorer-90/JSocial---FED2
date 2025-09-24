@@ -3,22 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <title>JSocial – Feed</title>
-  </head>
-  <body>
-    <h1>Feed</h1>
 
-    <!-- mini nav -->
-    <nav style="margin-bottom: 1rem;">
-      <a href="/profile/index.html">My profile</a>
-      <a href="/post/create/index.html">+ New Post</a>
-      <button id="logout">Logout</button>
+    <link 
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+      rel="stylesheet" 
+      integrity="sha384-GnfjVh6Iut8n6U74j8sDdQpS16QikYgOkkpJRUcEMF5x5ojP9ce2eFS0Jp6j1y" 
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="container py-5">
+    <h1 class="mb-4">Feed</h1>
+
+    <!-- navbar -->
+    <nav class="mb-4 d-flex gap-2">
+      <a href="/profile/index.html" class="btn btn-outline-primary">My profile</a>
+      <a href="/post/create/index.html" class="btn btn-success">+ New Post</a>
+      <button id="logout" class="btn btn-danger ms-auto">Logout</button>
     </nav>
 
-    <!-- search  -->
-    <input id="search" type="search" placeholder="Search posts..." />
+    <!-- search -->
+    <div class="mb-4">
+      <input 
+        id="search" 
+        type="search" 
+        class="form-control" 
+        placeholder="Search posts..."
+      />
+    </div>
 
     <!-- the feed -->
-    <ul id="feed"></ul>
+    <ul id="feed" class="list-unstyled"></ul>
 
     <script type="module" src="/src/js/ui/post/feed.js"></script>
   </body>

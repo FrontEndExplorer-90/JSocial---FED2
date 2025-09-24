@@ -4,28 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Post</title>
+
+    <link 
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+      rel="stylesheet" 
+      integrity="sha384-GnfjVh6Iut8n6U74j8sDdQpS16QikYgOkkpJRUcEMF5x5ojP9ce2eFS0Jp6j1y" 
+      crossorigin="anonymous"
+    />
   </head>
 
-  <body>
-    <h1>Edit Post</h1>
+  <body class="container py-5">
+    <h1 class="mb-4">Edit Post</h1>
 
-    <form id="edit-post">
-      <div>
-        <label for="title">Title</label>
-        <input id="title" name="title" required />
+    <form id="edit-post" class="card p-4 shadow-sm">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input id="title" name="title" required class="form-control" />
       </div>
 
-      <div>
-        <label for="body">Body</label>
-        <textarea id="body" name="body" rows="5"></textarea>
+      <div class="mb-3">
+        <label for="body" class="form-label">Body</label>
+        <textarea id="body" name="body" rows="5" class="form-control"></textarea>
       </div>
 
-      <button type="submit">Save</button>
-      <a href="/post/index.html">Cancel</a>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/post/index.html" class="btn btn-secondary">Cancel</a>
+      </div>
     </form>
 
-    <!-- point to your new script, not app.js -->
     <script type="module" src="/src/js/ui/post/update.js"></script>
   </body>
 </html>
-
