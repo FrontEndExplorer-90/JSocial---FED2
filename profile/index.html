@@ -2,34 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>My Profile</title>
+    <title>Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link 
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-      rel="stylesheet" 
-      integrity="sha384-GnfjVh6Iut8n6U74j8sDdQpS16QikYgOkkpJRUcEMF5x5xojP9ce2eFS0Jp6j1y" 
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
   </head>
-  <body class="container py-5">
-    <!-- navbar -->
+  <body class="container py-4">
     <nav class="mb-4">
-      <a href="/post/index.html" class="btn btn-outline-primary">← Back to Feed</a>
+      <a href="/post/index.html" class="btn btn-outline-secondary">← Feed</a>
     </nav>
 
-    <!-- profile header -->
-    <h1 id="title" class="mb-3">My Profile</h1>
-    <div id="info" class="mb-4"></div>
+    <header class="mb-3">
+      <h1 id="title" class="mb-1">Profile</h1>
+      <div id="info"></div>
+    </header>
 
-    <!-- posts -->
-    <h2 class="h4 mb-3">Posts</h2>
-    <ul id="posts" class="list-group"></ul>
+    <div class="row g-4">
+      <div class="col-12 col-lg-6">
+        <h2 class="h5">Posts</h2>
+        <ul id="posts" class="list-unstyled"></ul>
+      </div>
 
-    <!-- follow / unfollow actions -->
+      <div class="col-12 col-lg-6">
+        <div class="row g-4">
+          <div class="col-12">
+            <h2 class="h6">Followers <span class="text-muted" id="followersCount"></span></h2>
+            <ul id="followersList" class="list-unstyled"></ul>
+          </div>
+
+          <div class="col-12">
+            <h2 class="h6">Following <span class="text-muted" id="followingCount"></span></h2>
+            <ul id="followingList" class="list-unstyled"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="actions" class="mt-4 d-flex gap-2">
-      <button id="followBtn" hidden class="btn btn-primary">Follow</button>
-      <button id="unfollowBtn" hidden class="btn btn-outline-secondary">Unfollow</button>
+      <!-- follow/unfollow only shows when viewing someone else -->
+      <button id="followBtn" class="btn btn-primary" hidden>Follow</button>
+      <button id="unfollowBtn" class="btn btn-outline-danger" hidden>Unfollow</button>
     </div>
 
     <script type="module" src="/src/js/ui/profile/profile.js"></script>

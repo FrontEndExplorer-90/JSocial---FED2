@@ -1,3 +1,4 @@
+// src/js/ui/profile/profile.js
 import { fetchJson } from "/src/js/api/client.js";
 
 // --- Auth guard ---
@@ -13,28 +14,51 @@ const params = new URLSearchParams(location.search);
 const viewedName = params.get("name") || myName;
 
 // DOM
-const title = document.querySelector("#title");
-const info  = document.querySelector("#info");
-const posts = document.querySelector("#posts");
-const followBtn   = document.querySelector("#followBtn");
-const unfollowBtn = document.querySelector("#unfollowBtn");
+const title          = document.querySelector("#title");
+const info           = document.querySelector("#info");
+const postsEl        = document.querySelector("#posts");
+const followersEl    = document.querySelector("#followersList");
+const followingEl    = document.querySelector("#followingList");
+const followersCount = document.querySelector("#followersCount");
+const followingCount = document.querySelector("#followingCount");
+const followBtn      = document.querySelector("#followBtn");
+const unfollowBtn    = document.querySelector("#unfollowBtn");
 
-/**
- * Escape HTML entities to prevent XSS in profile content.
- * @param {string} [s=""] - Input string to escape.
- * @returns {string} Escaped string safe for innerHTML.
- */
 const esc = (s = "") =>
   s.replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
 
 /**
- * Load a profile (for `viewedName`) and render header + posts list.
+ * Render a simple list of users as links to their profiles.
+ * @param {Array<{name: string, avatar?: {url?: string}}>} users
+ * @param {HTMLElement} container
+ */
+function renderUserList(users = [], container) {
+  if (!users.length) {
+    container.innerHTML = `<li class="text-muted">None</li>`;
+    return;
+  }
+  container.innerHTML = users.map(u => {
+    const name = u?.name ?? "(unknown)";
+    // keep it simple; you could add small avatar circles here if you want
+    return `
+      <li class="mb-1">
+        <a href="/profile/index.html?name=${encodeURIComponent(name)}">${esc(name)}</a>
+      </li>
+    `;
+  }).join("");
+}
+
+/**
+ * Load a profile (for `viewedName`) and render header + posts + followers/following.
  * Includes followers/following so we can show counts and follow state.
- * @returns {Promise<void>} Resolves when profile is rendered or fails.
  */
 async function loadProfile() {
   title.textContent = "Loading…";
-  posts.innerHTML = "";
+  postsEl.innerHTML = "";
+  followersEl.innerHTML = "";
+  followingEl.innerHTML = "";
+  followersCount.textContent = "";
+  followingCount.textContent = "";
 
   try {
     const r = await fetchJson(
@@ -46,30 +70,41 @@ async function loadProfile() {
     // Header
     title.textContent = p.name;
     const avatar = p.avatar?.url
-      ? `<img src="${esc(p.avatar.url)}" alt="avatar" width="80" height="80" style="border-radius:50%;vertical-align:middle;margin-right:.5rem;">`
+      ? `<img src="${esc(p.avatar.url)}" alt="avatar" width="80" height="80" class="rounded-circle me-2 align-middle">`
       : "";
 
     info.innerHTML = `
-      <div>${avatar}<strong>${esc(p.name)}</strong></div>
-      <small>Followers: ${p._count?.followers ?? 0} • Following: ${p._count?.following ?? 0}</small>
+      <div class="d-flex align-items-center mb-1">${avatar}<strong class="fs-5">${esc(p.name)}</strong></div>
+      <small class="text-muted">
+        Followers: ${p._count?.followers ?? 0} • Following: ${p._count?.following ?? 0}
+      </small>
     `;
 
     // Posts (clickable -> single post page)
     const userPosts = p.posts ?? [];
-    posts.innerHTML = userPosts.length
+    postsEl.innerHTML = userPosts.length
       ? userPosts.map(x => `
-          <li style="margin:.5rem 0">
-            <a href="/post/details/index.html?id=${x.id}">
+          <li class="mb-2">
+            <a class="text-decoration-none" href="/post/details/index.html?id=${x.id}">
               ${esc(x.title || "(untitled)")}
             </a>
-            ${x.created ? `<small> • ${new Date(x.created).toLocaleDateString()}</small>` : ""}
+            ${x.created ? `<small class="text-muted"> • ${new Date(x.created).toLocaleDateString()}</small>` : ""}
           </li>
         `).join("")
-      : "<li>No posts yet</li>";
+      : `<li class="text-muted">No posts yet</li>`;
+
+    // Followers & Following lists
+    const followers = p.followers ?? [];
+    const following = p.following ?? [];
+    followersCount.textContent = `(${followers.length})`;
+    followingCount.textContent = `(${following.length})`;
+
+    renderUserList(followers, followersEl);
+    renderUserList(following, followingEl);
 
     // Follow / Unfollow visibility
     if (viewedName !== myName) {
-      const iFollow = !!(p.followers || []).find(f => f.name === myName);
+      const iFollow = !!followers.find(f => f.name === myName);
       followBtn.hidden   = iFollow;
       unfollowBtn.hidden = !iFollow;
     } else {
@@ -80,14 +115,13 @@ async function loadProfile() {
     console.error(e);
     title.textContent = "Failed to load profile";
     info.textContent  = e?.data?.errors?.[0]?.message || e.message || "";
-    posts.innerHTML   = "";
+    postsEl.innerHTML = "";
+    followersEl.innerHTML = "";
+    followingEl.innerHTML = "";
   }
 }
 
-/**
- * Event handler: follow the viewed profile, then reload it.
- * @returns {Promise<void>}
- */
+// Follow / Unfollow handlers
 followBtn?.addEventListener("click", async () => {
   try {
     await fetchJson(`/social/profiles/${encodeURIComponent(viewedName)}/follow`, { method: "PUT" });
