@@ -24,8 +24,21 @@ const followingCount = document.querySelector("#followingCount");
 const followBtn      = document.querySelector("#followBtn");
 const unfollowBtn    = document.querySelector("#unfollowBtn");
 
-const esc = (s = "") =>
-  s.replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+/**
+ * Escape HTML entities to prevent XSS in rendered content.
+ * @param {string} [s=""]
+ * @returns {string}
+ */
+function esc(s = "") {
+  return s.replace(/[&<>"']/g, (m) => (
+    { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m]
+  ));
+}
+
+/** Format ISO date to a short local date string. */
+function fmtDate(iso) {
+  try { return new Date(iso).toLocaleDateString(); } catch { return ""; }
+}
 
 /**
  * Render a simple list of users as links to their profiles.
@@ -33,16 +46,18 @@ const esc = (s = "") =>
  * @param {HTMLElement} container
  */
 function renderUserList(users = [], container) {
+  if (!container) return;
   if (!users.length) {
-    container.innerHTML = `<li class="text-muted">None</li>`;
+    container.innerHTML = `<li class="list-group-item text-muted">None</li>`;
     return;
   }
-  container.innerHTML = users.map(u => {
+  container.innerHTML = users.map((u) => {
     const name = u?.name ?? "(unknown)";
-    // keep it simple; you could add small avatar circles here if you want
     return `
-      <li class="mb-1">
-        <a href="/profile/index.html?name=${encodeURIComponent(name)}">${esc(name)}</a>
+      <li class="list-group-item py-2">
+        <a class="text-decoration-none" href="/profile/index.html?name=${encodeURIComponent(name)}">
+          ${esc(name)}
+        </a>
       </li>
     `;
   }).join("");
@@ -54,11 +69,11 @@ function renderUserList(users = [], container) {
  */
 async function loadProfile() {
   title.textContent = "Loading…";
-  postsEl.innerHTML = "";
-  followersEl.innerHTML = "";
-  followingEl.innerHTML = "";
-  followersCount.textContent = "";
-  followingCount.textContent = "";
+  if (postsEl)        postsEl.innerHTML = "";
+  if (followersEl)    followersEl.innerHTML = "";
+  if (followingEl)    followingEl.innerHTML = "";
+  if (followersCount) followersCount.textContent = "";
+  if (followingCount) followingCount.textContent = "";
 
   try {
     const r = await fetchJson(
@@ -70,41 +85,81 @@ async function loadProfile() {
     // Header
     title.textContent = p.name;
     const avatar = p.avatar?.url
-      ? `<img src="${esc(p.avatar.url)}" alt="avatar" width="80" height="80" class="rounded-circle me-2 align-middle">`
+      ? `<img src="${esc(p.avatar.url)}" alt="avatar" width="80" height="80"
+           class="rounded-circle me-2 align-middle">`
       : "";
 
     info.innerHTML = `
-      <div class="d-flex align-items-center mb-1">${avatar}<strong class="fs-5">${esc(p.name)}</strong></div>
+      <div class="d-flex align-items-center mb-1">
+        ${avatar}
+        <strong class="fs-5">${esc(p.name)}</strong>
+      </div>
       <small class="text-muted">
         Followers: ${p._count?.followers ?? 0} • Following: ${p._count?.following ?? 0}
       </small>
     `;
 
-    // Posts (clickable -> single post page)
+    // Posts (clickable -> single post page) + my own edit/delete
     const userPosts = p.posts ?? [];
-    postsEl.innerHTML = userPosts.length
-      ? userPosts.map(x => `
-          <li class="mb-2">
-            <a class="text-decoration-none" href="/post/details/index.html?id=${x.id}">
-              ${esc(x.title || "(untitled)")}
-            </a>
-            ${x.created ? `<small class="text-muted"> • ${new Date(x.created).toLocaleDateString()}</small>` : ""}
-          </li>
-        `).join("")
-      : `<li class="text-muted">No posts yet</li>`;
+    const isMe = (viewedName || "").toLowerCase() === (myName || "").toLowerCase();
+
+    if (postsEl) {
+      postsEl.classList.add("list-group"); // make sure UL is styled as list-group
+      postsEl.innerHTML = userPosts.length
+        ? userPosts.map((x) => `
+            <li class="list-group-item d-flex align-items-center justify-content-between" data-id="${x.id}">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <a class="text-decoration-none fw-semibold" href="/post/details/index.html?id=${x.id}">
+                  ${esc(x.title || "(untitled)")}
+                </a>
+                ${x.created ? `<small class="text-muted">• ${fmtDate(x.created)}</small>` : ""}
+              </div>
+              ${isMe ? `
+                <div class="d-flex align-items-center gap-2">
+                  <a class="btn btn-sm btn-outline-primary" href="/post/edit/index.html?id=${x.id}">Edit</a>
+                  <button class="btn btn-sm btn-outline-danger delete-post-btn" data-id="${x.id}">Delete</button>
+                </div>
+              ` : ""}
+            </li>
+          `).join("")
+        : `<li class="list-group-item text-muted">No posts yet</li>`;
+
+      // If it's my profile, wire delete buttons
+      if (isMe) {
+        postsEl.querySelectorAll(".delete-post-btn").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            const postId = e.currentTarget.dataset.id;
+            if (!confirm("Delete this post?")) return;
+            try {
+              await fetchJson(`/social/posts/${postId}`, { method: "DELETE" });
+              e.currentTarget.closest("li")?.remove();
+            } catch (err) {
+              console.error(err);
+              alert(err?.data?.errors?.[0]?.message || "Failed to delete post");
+            }
+          });
+        });
+      }
+    }
 
     // Followers & Following lists
     const followers = p.followers ?? [];
     const following = p.following ?? [];
-    followersCount.textContent = `(${followers.length})`;
-    followingCount.textContent = `(${following.length})`;
+    if (followersCount) followersCount.textContent = `(${followers.length})`;
+    if (followingCount) followingCount.textContent = `(${following.length})`;
 
-    renderUserList(followers, followersEl);
-    renderUserList(following, followingEl);
+    if (followersEl) {
+      followersEl.classList.add("list-group");
+      renderUserList(followers, followersEl);
+    }
+    if (followingEl) {
+      followingEl.classList.add("list-group");
+      renderUserList(following, followingEl);
+    }
 
     // Follow / Unfollow visibility
     if (viewedName !== myName) {
-      const iFollow = !!followers.find(f => f.name === myName);
+      const iFollow = !!followers.find((f) => f.name === myName);
       followBtn.hidden   = iFollow;
       unfollowBtn.hidden = !iFollow;
     } else {
@@ -115,9 +170,9 @@ async function loadProfile() {
     console.error(e);
     title.textContent = "Failed to load profile";
     info.textContent  = e?.data?.errors?.[0]?.message || e.message || "";
-    postsEl.innerHTML = "";
-    followersEl.innerHTML = "";
-    followingEl.innerHTML = "";
+    if (postsEl)     postsEl.innerHTML = "";
+    if (followersEl) followersEl.innerHTML = "";
+    if (followingEl) followingEl.innerHTML = "";
   }
 }
 
