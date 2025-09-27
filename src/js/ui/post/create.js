@@ -1,6 +1,5 @@
 import { fetchJson } from "/src/js/api/client.js";
 
-// check if logged in
 const token = localStorage.getItem("jsocial_token");
 const apiKey = localStorage.getItem("jsocial_apiKey");
 if (!token || !apiKey) {
@@ -21,10 +20,10 @@ form.addEventListener("submit", async (e) => {
       body: JSON.stringify({ title, body }),
     });
 
-    alert("✅ Post created!");
-    location.href = "/post/index.html"; // go back to feed
+    alert("Post created!");
+    location.href = "/post/index.html"; 
   } catch (err) {
     console.error(err);
-    alert(err?.data?.errors?.[0]?.message || "❌ Failed to create post");
+    alert(err?.data?.errors?.[0]?.message || "Failed to create post");
   }
 });

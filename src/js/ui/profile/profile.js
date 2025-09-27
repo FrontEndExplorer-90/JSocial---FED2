@@ -1,19 +1,14 @@
-// src/js/ui/profile/profile.js
 import { fetchJson } from "/src/js/api/client.js";
 
-// --- Auth guard ---
 const token  = localStorage.getItem("jsocial_token");
 const apiKey = localStorage.getItem("jsocial_apiKey");
 if (!token || !apiKey) location.href = "/auth/login/index.html";
 
-// who am I?
 const myName = localStorage.getItem("jsocial_name") || "";
 
-// which profile to show: ?name=OtherUser or me
 const params = new URLSearchParams(location.search);
 const viewedName = params.get("name") || myName;
 
-// DOM
 const title          = document.querySelector("#title");
 const info           = document.querySelector("#info");
 const postsEl        = document.querySelector("#posts");
@@ -25,7 +20,7 @@ const followBtn      = document.querySelector("#followBtn");
 const unfollowBtn    = document.querySelector("#unfollowBtn");
 
 /**
- * this should prevent XSS in rendered content.
+ * makes text for html.
  * @param {string} [s=""]
  * @returns {string}
  */
@@ -40,7 +35,7 @@ function fmtDate(iso) {
 }
 
 /**
- * this one renders a simple list of users as links to their profiles.
+ * makes a list of profile links.
  * @param {Array<{name: string, avatar?: {url?: string}}>} users
  * @param {HTMLElement} container
  */

@@ -1,19 +1,18 @@
 import { fetchJson } from "/src/js/api/client.js";
 
-// --- Auth guard ---
+
 const token = localStorage.getItem("jsocial_token");
 const apiKey = localStorage.getItem("jsocial_apiKey");
 if (!token || !apiKey) location.href = "/auth/login/index.html";
 
-// who am I?
+
 const myName = (localStorage.getItem("jsocial_name") || "").toLowerCase();
 
-// DOM
+
 const list = document.querySelector("#feed");
 const logoutBtn = document.querySelector("#logout");
 const searchInput = document.querySelector("#search");
 
-// Logout
 logoutBtn?.addEventListener("click", () => {
   localStorage.removeItem("jsocial_token");
   localStorage.removeItem("jsocial_apiKey");
@@ -22,9 +21,9 @@ logoutBtn?.addEventListener("click", () => {
 });
 
 /**
- * Escape HTML special characters to prevent XSS.
- * @param {string} [s=""] - The string to escape.
- * @returns {string} Escaped HTML-safe string.
+ * Makes text safe for use in HTML.
+ * @param {string} [s=""] - The string that makes it save.
+ * @returns {string} the HTML-safe string.
  */
 function escapeHtml(s = "") {
   return s.replace(/[&<>"']/g, (m) => (
@@ -33,9 +32,9 @@ function escapeHtml(s = "") {
 }
 
 /**
- * Format an ISO date string into a human-readable date/time.
+ * makes a date easy to read.
  * @param {string} iso - ISO date string.
- * @returns {string} Localized date/time string, or empty string on error.
+ * @returns {string} finds date/time string, or empty string on error.
  */
 function formatDate(iso) {
   try { return new Date(iso).toLocaleString(); } catch { return ""; }
@@ -45,7 +44,7 @@ function formatDate(iso) {
 let allPosts = [];
 
 /**
- * Render posts into the feed list as Bootstrap cards.
+ * puts posts into a feed.
  * Adds edit/delete buttons for the logged-in user’s posts.
  * @param {Array<Object>} items - Array of post objects.
  */
@@ -83,9 +82,9 @@ function render(items) {
         </div>
       </li>
     `;
-  }).join(""); // <-- IMPORTANT: close template and join properly
+  }).join(""); 
 
-  // Wire delete buttons after render
+
   list.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
       const id = e.currentTarget.dataset.id;
@@ -101,7 +100,7 @@ function render(items) {
   });
 }
 
-// Load posts
+
 (async () => {
   list.innerHTML = "<li>Loading…</li>";
   try {
@@ -115,7 +114,7 @@ function render(items) {
   }
 })();
 
-// Live search (optional)
+
 searchInput?.addEventListener("input", (e) => {
   const q = e.target.value.toLowerCase();
   const filtered = allPosts.filter((p) =>

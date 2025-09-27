@@ -1,7 +1,5 @@
-// src/js/ui/post/update.js
 import { fetchJson } from "/src/js/api/client.js";
 
-// Auth guard
 const token = localStorage.getItem("jsocial_token");
 const apiKey = localStorage.getItem("jsocial_apiKey");
 if (!token || !apiKey) location.href = "/auth/login/index.html";
@@ -11,7 +9,6 @@ const params = new URLSearchParams(location.search);
 const id = params.get("id");
 if (!id) location.href = "/post/index.html";
 
-// Prefill existing post
 (async () => {
   try {
     const resp = await fetchJson(`/social/posts/${id}`);
@@ -25,7 +22,7 @@ if (!id) location.href = "/post/index.html";
   }
 })();
 
-// Save updates
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = e.target.title.value.trim();

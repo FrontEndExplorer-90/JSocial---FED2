@@ -1,6 +1,5 @@
 import { fetchJson } from "/src/js/api/client.js";
 
-// --- Auth guard ---
 const token  = localStorage.getItem("jsocial_token");
 const apiKey = localStorage.getItem("jsocial_apiKey");
 if (!token || !apiKey) location.href = "/auth/login/index.html";
@@ -17,10 +16,7 @@ if (!id) {
   loadPost();
 }
 
-/**
- * Fetch and render a single post by id.
- * If the post belongs to the logged-in user, show Edit/Delete actions.
- */
+
 async function loadPost() {
   postEl.innerHTML = "<p>Loading…</p>";
   actions && (actions.innerHTML = "");
