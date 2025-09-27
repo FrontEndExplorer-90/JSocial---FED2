@@ -25,7 +25,7 @@ const followBtn      = document.querySelector("#followBtn");
 const unfollowBtn    = document.querySelector("#unfollowBtn");
 
 /**
- * Escape HTML entities to prevent XSS in rendered content.
+ * this should prevent XSS in rendered content.
  * @param {string} [s=""]
  * @returns {string}
  */
@@ -35,13 +35,12 @@ function esc(s = "") {
   ));
 }
 
-/** Format ISO date to a short local date string. */
 function fmtDate(iso) {
   try { return new Date(iso).toLocaleDateString(); } catch { return ""; }
 }
 
 /**
- * Render a simple list of users as links to their profiles.
+ * this one renders a simple list of users as links to their profiles.
  * @param {Array<{name: string, avatar?: {url?: string}}>} users
  * @param {HTMLElement} container
  */
@@ -63,10 +62,6 @@ function renderUserList(users = [], container) {
   }).join("");
 }
 
-/**
- * Load a profile (for `viewedName`) and render header + posts + followers/following.
- * Includes followers/following so we can show counts and follow state.
- */
 async function loadProfile() {
   title.textContent = "Loading…";
   if (postsEl)        postsEl.innerHTML = "";
@@ -104,7 +99,7 @@ async function loadProfile() {
     const isMe = (viewedName || "").toLowerCase() === (myName || "").toLowerCase();
 
     if (postsEl) {
-      postsEl.classList.add("list-group"); // make sure UL is styled as list-group
+      postsEl.classList.add("list-group"); 
       postsEl.innerHTML = userPosts.length
         ? userPosts.map((x) => `
             <li class="list-group-item d-flex align-items-center justify-content-between" data-id="${x.id}">
@@ -124,7 +119,6 @@ async function loadProfile() {
           `).join("")
         : `<li class="list-group-item text-muted">No posts yet</li>`;
 
-      // If it's my profile, wire delete buttons
       if (isMe) {
         postsEl.querySelectorAll(".delete-post-btn").forEach((btn) => {
           btn.addEventListener("click", async (e) => {
@@ -142,7 +136,7 @@ async function loadProfile() {
       }
     }
 
-    // Followers & Following lists
+    // this one manages the Followers & Following lists
     const followers = p.followers ?? [];
     const following = p.following ?? [];
     if (followersCount) followersCount.textContent = `(${followers.length})`;
@@ -157,7 +151,7 @@ async function loadProfile() {
       renderUserList(following, followingEl);
     }
 
-    // Follow / Unfollow visibility
+    // That makes the Follow / Unfollow visibile 
     if (viewedName !== myName) {
       const iFollow = !!followers.find((f) => f.name === myName);
       followBtn.hidden   = iFollow;
@@ -176,7 +170,7 @@ async function loadProfile() {
   }
 }
 
-// Follow / Unfollow handlers
+// this handles the Follow / Unfollow 
 followBtn?.addEventListener("click", async () => {
   try {
     await fetchJson(`/social/profiles/${encodeURIComponent(viewedName)}/follow`, { method: "PUT" });

@@ -2,30 +2,72 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>JSocial – Post Details</title>
+    <title>JSocial – Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-    crossorigin="anonymous"
-  />
-  
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      body {
+        background-color: #021c64; /* deep blue */
+      }
+      header {
+        background-color: #000;    /* black header block */
+        padding: 2rem 1rem;
+        border-radius: .5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,.25);
+      }
+      /* Optional: give feed cards a subtle lift on dark bg */
+      .card.shadow-sm {
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.35) !important;
+      }
+    </style>
   </head>
+
   <body class="container py-5">
-  <h1 class="mb-4">Post Details</h1>
+    <!-- Brand Header -->
+    <header class="text-center mb-4">
+      <img 
+        src="https://i.postimg.cc/7YqrZNG6/Chat-GPT-Image-26-sep-2025-19-53-46.png" 
+        alt="App Logo" 
+        style="height:80px; max-width:100%;" 
+        class="mb-3"
+      />
+      <h1 class="fw-bold text-light">JSocial Timeline</h1>
+      <p class="text-light">Share your thoughts with the community</p>
+    </header>
 
-  <article id="post" class="card p-4 mb-3 shadow-sm">
-    Loading…
-  </article>
+    <!-- Page Title -->
+    <h2 class="mb-4 text-light">Timeline</h2>
 
-  <div id="postActions" class="d-flex gap-2 mb-4"></div>
+    <!-- Top Nav -->
+    <nav class="mb-4 d-flex gap-2">
+      <a href="/profile/index.html" class="btn btn-outline-light">My profile</a>
+      <a href="/post/create/index.html" class="btn btn-success">+ New Post</a>
+      <button id="logout" class="btn btn-danger ms-auto">Logout</button>
+    </nav>
 
-  <p>
-    <a href="/post/index.html" class="btn btn-secondary">← Back to Feed</a>
-  </p>
+    <!-- Search -->
+    <div class="mb-4">
+      <input 
+        id="search" 
+        type="search" 
+        class="form-control"
+        placeholder="Search posts..."
+        aria-label="Search posts"
+      />
+    </div>
 
-  <script type="module" src="/src/js/ui/post/details.js"></script>
-</body>
+    <!-- Feed -->
+    <ul id="feed" class="list-unstyled"></ul>
 
+    <!-- App script -->
+    <script type="module" src="/src/js/ui/post/feed.js"></script>
+  </body>
 </html>

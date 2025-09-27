@@ -2,35 +2,66 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Create Post</title>
+    <title>JSocial – Create Post</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-    crossorigin="anonymous"
-  />
-  
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      header {
+        background-color: #fff;
+        padding: 2rem 1rem;
+        border-radius: .5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        margin-bottom: 2rem;
+      }
+    </style>
   </head>
   <body class="container py-5">
-    <h1 class="mb-4">Create Post</h1>
 
-    <form id="create-post" class="mb-3">
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input id="title" name="title" class="form-control" required />
-      </div>
+    <!-- App Header -->
+    <header class="text-center mb-4">
+      <img 
+        src="https://i.postimg.cc/7YqrZNG6/Chat-GPT-Image-26-sep-2025-19-53-46.png" 
+        alt="App Logo" 
+        style="height:80px; max-width:100%;" 
+        class="mb-3"
+      />
+      <h1 class="fw-bold">JSocial</h1>
+      <p class="text-muted">Share your thoughts with the community</p>
+    </header>
 
-      <div class="mb-3">
-        <label for="body" class="form-label">Body</label>
-        <textarea id="body" name="body" rows="5" class="form-control"></textarea>
-      </div>
+    <!-- Create Post Form -->
+    <div class="card shadow-sm p-4 mx-auto" style="max-width: 600px;">
+      <h2 class="mb-4">Create Post</h2>
+      <form id="create-post">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input id="title" name="title" class="form-control" required />
+        </div>
 
-      <button type="submit" class="btn btn-primary">Publish</button>
-      <a href="/post/index.html" class="btn btn-secondary ms-2">Back to Feed</a>
-    </form>
+        <div class="mb-3">
+          <label for="body" class="form-label">Body</label>
+          <textarea id="body" name="body" rows="5" class="form-control"></textarea>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <a href="/post/index.html" class="btn btn-secondary">← Back to Feed</a>
+          <button type="submit" class="btn btn-primary">Publish</button>
+        </div>
+      </form>
+    </div>
 
     <script type="module" src="/src/js/ui/post/create.js"></script>
   </body>
 </html>
+

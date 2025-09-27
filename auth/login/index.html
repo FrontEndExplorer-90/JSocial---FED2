@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Noroff FED2 JS2 CA – Login</title>
+    <title>JSocial – Login</title>
 
     <!-- Bootstrap -->
     <link
@@ -14,12 +14,39 @@
     />
 
     <script type="module" src="/src/js/ui/auth/login.js"></script>
+
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      header {
+        background-color: #fff;
+        padding: 2rem 1rem;
+        border-radius: .5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        margin-bottom: 2rem;
+      }
+    </style>
   </head>
 
   <body class="container py-5">
-    <h1 class="mb-4">Login</h1>
 
-    <form name="login" class="card p-4 shadow-sm" style="max-width: 420px;">
+    <!-- App Header -->
+    <header class="text-center mb-4">
+      <img
+        src="https://i.postimg.cc/7YqrZNG6/Chat-GPT-Image-26-sep-2025-19-53-46.png"
+        alt="App Logo"
+        style="height:80px; max-width:100%;"
+        class="mb-3"
+      />
+      <h1 class="fw-bold">JSocial</h1>
+      <p class="text-muted">Connect. Share. Explore.</p>
+    </header>
+
+    <!-- Login Form -->
+    <h2 class="mb-4 text-center">Login</h2>
+
+    <form name="login" class="card p-4 shadow-sm mx-auto" style="max-width: 420px;">
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
         <input id="email" type="email" name="email" class="form-control" required />
@@ -35,5 +62,6 @@
         <button class="btn btn-primary">Login</button>
       </div>
     </form>
+
   </body>
 </html>
