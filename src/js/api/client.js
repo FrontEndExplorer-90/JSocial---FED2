@@ -1,4 +1,5 @@
 // src/js/api/client.js
+
 const BASE_URL = "https://v2.api.noroff.dev";
 
 export function setAuth({ token, apiKey }) {
@@ -6,7 +7,7 @@ export function setAuth({ token, apiKey }) {
   if (apiKey !== undefined) localStorage.setItem("jsocial_apiKey", apiKey || "");
 }
 
-function buildHeaders(extra = {}) {
+export function getAuth(extra = {}) {
   const token = localStorage.getItem("jsocial_token");
   const apiKey = localStorage.getItem("jsocial_apiKey");
   return {
@@ -20,9 +21,9 @@ function buildHeaders(extra = {}) {
 export async function fetchJson(path, options = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
-    headers: buildHeaders(options.headers),
+    headers: getAuth(options.headers),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw Object.assign(new Error("Request failed"), { status: res.status, data });
-  return data; // { data, meta }
+  return data;
 }
