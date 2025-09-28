@@ -13,7 +13,8 @@
       crossorigin="anonymous"
     />
 
-    <script type="module" src="/src/js/ui/auth/register.js"></script>
+    <!-- ✅ Load the view file, not the auth helper -->
+    <script type="module" src="/src/js/router/views/register.js"></script>
 
     <style>
       body {
@@ -22,21 +23,20 @@
       header {
         background-color: #0D0A0A;
         padding: 2rem 1rem;
-        border-radius: .5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
       }
     </style>
   </head>
 
   <body class="container py-5">
-
     <!-- App Header -->
     <header class="text-center mb-4">
-      <img 
-        src="https://i.postimg.cc/7YqrZNG6/Chat-GPT-Image-26-sep-2025-19-53-46.png" 
-        alt="App Logo" 
-        style="height:80px; max-width:100%;" 
+      <img
+        src="https://i.postimg.cc/7YqrZNG6/Chat-GPT-Image-26-sep-2025-19-53-46.png"
+        alt="App Logo"
+        style="height: 80px; max-width: 100%;"
         class="mb-3"
       />
       <h1 class="fw-bold">JSocial</h1>
@@ -56,7 +56,7 @@
           class="form-control"
           required
           maxlength="20"
-          pattern="^[\\w]+$"
+          pattern="^[\w]+$"
           title="Please enter a username using only letters and numbers"
         />
       </div>
@@ -69,7 +69,7 @@
           name="email"
           class="form-control"
           required
-          pattern="^[\\w\\-.]+@(stud\\.)?noroff\\.no$"
+          pattern="^[\w\-.]+@(stud\.)?noroff\.no$"
           title="Please enter a valid noroff.no or stud.noroff.no address"
         />
       </div>
@@ -91,6 +91,5 @@
         <button class="btn btn-success">Register</button>
       </div>
     </form>
-
   </body>
 </html>

@@ -1,29 +1,47 @@
-import { fetchJson } from "/src/js/api/client.js";
+import { fetchJson, getAuth } from "../../api/client.js";
 
-const token = localStorage.getItem("jsocial_token");
-const apiKey = localStorage.getItem("jsocial_apiKey");
-if (!token || !apiKey) {
-  location.href = "/auth/login/index.html";
+function parseTags(input) {
+  return input
+    .split(",")
+    .map(t => t.trim())
+    .filter(Boolean);
 }
 
-const form = document.querySelector("#create-post");
-
-form.addEventListener("submit", async (e) => {
+export async function onCreatePost(e) {
   e.preventDefault();
 
-  const title = e.target.title.value.trim();
-  const body = e.target.body.value.trim();
+  const form = e.target;
+  const title = form.title.value.trim();
+  const body = form.body.value.trim();
+  const tags = parseTags(form.tags?.value || "");
+  const mediaUrl = form.media?.value?.trim();
 
   try {
-    await fetchJson("/social/posts", {
+    
+    const { token } = getAuth?.() || {};
+    if (!token) {
+      alert("Please log in to create a post.");
+      location.href = "/auth/login/";
+      return;
+    }
+
+    const payload = {
+      title,
+      body,
+      tags,
+      ...(mediaUrl ? { media: { url: mediaUrl, alt: title } } : {}),
+    };
+
+    await fetchJson("/posts", {
       method: "POST",
-      body: JSON.stringify({ title, body }),
+      body: JSON.stringify(payload),
     });
 
-    alert("Post created!");
-    location.href = "/post/index.html"; 
+  
+    location.href = "/post/index.html";
   } catch (err) {
+    const msg = err?.data?.errors?.[0]?.message || "Could not create post";
+    alert(msg);
     console.error(err);
-    alert(err?.data?.errors?.[0]?.message || "Failed to create post");
   }
-});
+}
