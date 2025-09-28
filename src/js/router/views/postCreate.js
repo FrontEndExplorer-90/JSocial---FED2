@@ -1,6 +1,6 @@
 // src/js/router/views/postCreate.js
 import { onCreatePost } from "../../ui/post/create.js";
-import authGuard from "../../ui/utilities/authGuard.js"; 
+import { authGuard } from "../../utilities/authGuard.js";
 
 authGuard?.();
 
