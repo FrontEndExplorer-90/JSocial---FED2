@@ -1,5 +1,4 @@
-import "./css/style.css";
-
-import router from "./js/router";
-
-await router(window.location.pathname);
+// src/app.js
+import router from "../src/js/router/index.js";     
+import "../src/js/ui/auth/logout.js";              
+document.addEventListener("DOMContentLoaded", router);

@@ -1,3 +1,4 @@
-import { authGuard } from "../../utilities/authGuard";
+import "../../ui/post/update.js";
+
 
 authGuard();

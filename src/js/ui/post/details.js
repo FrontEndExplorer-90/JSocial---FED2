@@ -1,4 +1,4 @@
-import { fetchJson } from "/src/js/api/client.js";
+import { fetchJson } from "../../api/client.js";
 
 const token  = localStorage.getItem("jsocial_token");
 const apiKey = localStorage.getItem("jsocial_apiKey");

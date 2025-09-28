@@ -1,3 +1,4 @@
-import { authGuard } from "../../utilities/authGuard";
+import "../../ui/auth/logout.js";
+import "../../ui/profile/profile.js";
 
 authGuard();
