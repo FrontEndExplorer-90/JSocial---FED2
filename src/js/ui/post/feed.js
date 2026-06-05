@@ -1,4 +1,3 @@
-javascript
 import { fetchJson } from "../../api/client.js";
 
 const token = localStorage.getItem("jsocial_token");
