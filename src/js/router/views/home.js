@@ -1,3 +1,5 @@
 import { authGuard } from "../../utilities/authGuard.js";
 
-authGuard();
+export default function () {
+  authGuard();
+}

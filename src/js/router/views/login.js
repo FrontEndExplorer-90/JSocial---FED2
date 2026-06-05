@@ -1,4 +1,9 @@
-import { onLogin } from "../../ui/auth/login.js";
+import { onRegister } from "../../ui/auth/register.js";
 
-const form = document.forms.login; 
-form?.addEventListener("submit", onLogin);
+export default function () {
+  const form = document.forms.register;
+
+  if (form) {
+    form.addEventListener("submit", onRegister);
+  }
+}

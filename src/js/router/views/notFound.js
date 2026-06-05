@@ -1,1 +1,3 @@
-alert("Page cannot be found in /src/views");
+export default function () {
+  console.warn("Page not found");
+}

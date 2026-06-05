@@ -1,9 +1,12 @@
-// src/js/router/views/postCreate.js
 import { onCreatePost } from "../../ui/post/create.js";
 import { authGuard } from "../../utilities/authGuard.js";
 
-authGuard?.();
+export default function () {
+  authGuard();
 
-const form = document.forms.createPost; 
-form?.addEventListener("submit", onCreatePost);
+  const form = document.forms.createPost;
 
+  if (form) {
+    form.addEventListener("submit", onCreatePost);
+  }
+}

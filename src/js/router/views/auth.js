@@ -1,1 +1,3 @@
-alert("Auth Index Page");
+export default function () {
+  console.log("Auth Index Page");
+}
