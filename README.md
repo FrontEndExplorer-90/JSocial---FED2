@@ -1,3 +1,5 @@
+> **Note:** This project was revisited and improved as part of the Portfolio 2 assessment
+
 JSocial – FED2 JS2 Course Assignment
 
 This is my course assignment project for JavaScript 2.
@@ -25,3 +27,16 @@ Links:
 Repo: GitHub https://github.com/FrontEndExplorer-90/JSocial---FED2.git
 
 Live Site: (https://euphonious-swan-5f89d1.netlify.app/auth/login)
+
+
+## Portfolio 2 Updates
+
+The following improvements were made after the original submission:
+
+* Improved authentication flow and login experience.
+* Refined profile loading and account management functionality.
+* Improved API integration and request handling.
+* Enhanced navigation and overall user experience.
+* Updated documentation and reviewed accessibility considerations.
+
+These updates were completed to demonstrate improvements made after the original assessment and to reflect continued frontend development growth.
